@@ -1,0 +1,12 @@
+{
+  "ID": 1,
+  "NAME": "",
+  "CLIENT_PORT": -1,
+  "PERIOD": 1000,
+  "HEARTBEAT_THRESHOLD": 3000,
+  "ERR_RATIO": 0.1,
+  "SERVER_PORT": 6666,
+  "SERVER_ADDR": "127.0.0.1",
+   "UI_PORT": 6667,
+  "UI_ADDR": "localhost"
+}
