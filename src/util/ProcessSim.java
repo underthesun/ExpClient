@@ -13,8 +13,17 @@ public class ProcessSim {
     private int id;
     private String addr;
     private int port;
+    private long regTime;
     private long lastBeat;
     private boolean isOnline;
+
+    public long getRegTime() {
+        return regTime;
+    }
+
+    public void setRegTime(long regTime) {
+        this.regTime = regTime;
+    }
 
     public int getId() {
         return id;
@@ -54,5 +63,5 @@ public class ProcessSim {
 
     public void setIsOnline(boolean isOnline) {
         this.isOnline = isOnline;
-    }
+    }   
 }

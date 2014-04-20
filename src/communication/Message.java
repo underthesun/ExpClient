@@ -28,6 +28,10 @@ public class Message {
     public static String INT_START = "intStart";
     public static String INT_REPORT = "intReport";
     public static String INT_ECHO = "intEcho";
+    public static String PROCESS_ONLINE = "proOn";
+    
+    public static String KILL = "kill";
+    //
     private String type;
     private int id;
     private String content;

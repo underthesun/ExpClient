@@ -15,8 +15,9 @@ public class ClientTest {
     static MidClient client;
 
     public static void main(String[] args) throws InterruptedException {
-
-        client = new MidClient();
+        System.out.println(args[0]);
+        client = new MidClient(args[0]);
+//        client = new MidClient();
 //        initIntegrity();
     }
 

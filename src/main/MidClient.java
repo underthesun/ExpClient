@@ -26,6 +26,15 @@ public class MidClient {
     private IntegrityValidator integrityValidator;
     private Gson gson;
 
+    public MidClient(String confFile) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
+        configuration = Configurator.parseConfiguration(new File(confFile));
+        communicationTool = new CommunicationTool(this, configuration.CLIENT_PORT);
+
+        processManager = new ProcessManager(this, configuration);
+        integrityValidator = new IntegrityValidator(this);
+    }
+
     public MidClient() {
         gson = new GsonBuilder().setPrettyPrinting().create();
         configuration = Configurator.parseConfiguration(new File("client_conf.json"));
@@ -33,6 +42,8 @@ public class MidClient {
 
         processManager = new ProcessManager(this, configuration);
         integrityValidator = new IntegrityValidator(this);
+        
+        processManager.register();
     }
 
     public void parseData(String ip, int port, String data) {
@@ -46,6 +57,9 @@ public class MidClient {
             integrityValidator.orderRecv(message);
         } else if (mType.equals(Message.DATA)) {
             integrityValidator.validate(message);
+        } else if (mType.equals(Message.KILL)) {
+            System.out.println("kill");
+            System.exit(0);
         }
     }
 

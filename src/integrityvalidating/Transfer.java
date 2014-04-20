@@ -45,28 +45,29 @@ public class Transfer {
             List<ProcessSim> processSims = new ArrayList<ProcessSim>(postProcess);
             final ProcessSim ps = processSims.get(new Random().nextInt(processSims.size()));
             //send order information to a random post process
-            client.sendMessageToClient(ps, gson.toJson(message, Message.class));
+            if (ps.isIsOnline()) {
+                client.sendMessageToClient(ps, gson.toJson(message, Message.class));
 
-            final Message messageData = new Message();
-            messageData.setType(Message.DATA);
-            messageData.setId(client.getConfiguration().ID);
-            messageData.setContent(gson.toJson(errGen(order), Order.class));//generate random error
-            //send order data after 1000 millisecond
-            new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(1000);
-                                client.sendMessageToClient(ps, gson.toJson(messageData, Message.class));
+                final Message messageData = new Message();
+                messageData.setType(Message.DATA);
+                messageData.setId(client.getConfiguration().ID);
+                messageData.setContent(gson.toJson(errGen(order), Order.class));//generate random error
+                //send order data after 1000 millisecond
+                new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                    client.sendMessageToClient(ps, gson.toJson(messageData, Message.class));
 
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(Transfer.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(Transfer.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                        }
-                    }).start();
-        }else{
-
+                        }).start();
+            } else {
+            }
         }
     }
 

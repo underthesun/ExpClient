@@ -41,7 +41,6 @@ public class ProcessManager {
 
         gson = new GsonBuilder().setPrettyPrinting().create();
 
-        register();
         heartBeatThread = new HeartBeatThread(this);
         Timer timer = new Timer();
         timer.schedule(heartBeatThread, 1000, configuration.PERIOD);
@@ -76,7 +75,9 @@ public class ProcessManager {
 
     public void registerConfirm(Message m) {
         processSim.setIsOnline(true);
-        processSim.setLastBeat(System.currentTimeMillis());
+        long t = System.currentTimeMillis();
+        processSim.setRegTime(t);
+        processSim.setLastBeat(t);
 
         HashMap<String, HashSet<ProcessSim>> linkedProcess = gson.fromJson(m.getContent(), new TypeToken<HashMap<String, HashSet<ProcessSim>>>() {
         }.getType());
