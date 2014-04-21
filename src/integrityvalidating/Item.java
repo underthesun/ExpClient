@@ -5,6 +5,8 @@
 package integrityvalidating;
 
 /**
+ * 用以模拟数据完整性验证的物品信息。
+ * 物品包含了物品标识id，其所属包标识packageId
  *
  * @author shuai
  */
@@ -13,7 +15,7 @@ public class Item implements Cloneable {
     private int id;
     private int packageId = -1;
 //    private int dstNode = -1;
-    private long lastTimeChecked;
+//    private long lastTimeChecked;
 
     public Item(int id) {
         this.id = id;
@@ -73,14 +75,13 @@ public class Item implements Cloneable {
         this.packageId = packageId;
     }
 
-    public long getLastTimeChecked() {
-        return lastTimeChecked;
-    }
-
-    public void setLastTimeChecked(long lastTimeChecked) {
-        this.lastTimeChecked = lastTimeChecked;
-    }
-
+//    public long getLastTimeChecked() {
+//        return lastTimeChecked;
+//    }
+//
+//    public void setLastTimeChecked(long lastTimeChecked) {
+//        this.lastTimeChecked = lastTimeChecked;
+//    }
 //    public int getDstNode() {
 //        return dstNode;
 //    }
@@ -88,7 +89,6 @@ public class Item implements Cloneable {
 //    public void setDstNode(int dstNode) {
 //        this.dstNode = dstNode;
 //    }
-
 //    public static void main(String[] args) {
 //        HashSet<Item> items = new HashSet<Item>();
 //        Item item1 = new Item(1);

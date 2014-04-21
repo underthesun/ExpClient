@@ -16,8 +16,14 @@ import main.MidClient;
 import util.ProcessSim;
 
 /**
+ * 过程管理类。 对过程节点端的过程图构建和维护，并提供访问关联过程信息的接口
  *
  * @author b1106
+ * @see MidClient
+ * @see HeartBeatThread
+ * @see Configuration
+ * @see ProcessSim
+ * @see Gson
  */
 public class ProcessManager {
 
@@ -29,6 +35,12 @@ public class ProcessManager {
     private HashSet<ProcessSim> preProcessSims;
     private HashSet<ProcessSim> postProcessSims;
 
+    /**
+     * 构造过程管理类实例。 发起心跳线程，每个1000毫秒发送心跳信息
+     *
+     * @param client 过程节点类实例
+     * @param configuration 过程节点配置实例
+     */
     public ProcessManager(MidClient client, Configuration configuration) {
         this.client = client;
         this.configuration = configuration;
@@ -46,6 +58,13 @@ public class ProcessManager {
         timer.schedule(heartBeatThread, 1000, configuration.PERIOD);
     }
 
+    /**
+     * 发送心跳信息接口。 根据节点当前的状态，若还未注册成功，则调用注册接口发送注册信息； 若已注册成功，则发送心跳信息。
+     * 若节点已经超时，则调用超时处理接口进行超时处理
+     *
+     * @see Message#HEARTBEAT
+     * @see MidClient#sendMessage(java.lang.String, int, java.lang.String) 
+     */
     public void heartbeat() {
         if (!processSim.isIsOnline()) {
             register();
@@ -64,6 +83,11 @@ public class ProcessManager {
         }
     }
 
+    /**
+     * 注册接口。 在节点启动时发送注册信息
+     * @see Message#REGISTER
+     * @see MidClient#sendMessage(java.lang.String, int, java.lang.String) 
+     */
     public void register() {
         Message message = new Message();
         message.setType(Message.REGISTER);
@@ -73,6 +97,11 @@ public class ProcessManager {
                 gson.toJson(message, Message.class));
     }
 
+    /**
+     * 注册回馈接口。处理服务器端的注册回馈信息
+     * @param m 注册回馈数据
+     * @see ProcessSim
+     */
     public void registerConfirm(Message m) {
         processSim.setIsOnline(true);
         long t = System.currentTimeMillis();
@@ -85,6 +114,11 @@ public class ProcessManager {
         postProcessSims = linkedProcess.get(Message.PROCESS_POST_KEY);
     }
 
+    /**
+     * 心跳回馈接口。处理服务器端的心跳回馈信息
+     * @param m 心跳回馈数据
+     * @see ProcessSim
+     */
     public void heartbeatConfirm(Message m) {
         processSim.setLastBeat(System.currentTimeMillis());
         HashMap<String, HashSet<ProcessSim>> linkedProcess = gson.fromJson(m.getContent(), new TypeToken<HashMap<String, HashSet<ProcessSim>>>() {
@@ -93,6 +127,9 @@ public class ProcessManager {
         postProcessSims = linkedProcess.get(Message.PROCESS_POST_KEY);
     }
 
+    /**
+     * 超时处理接口。
+     */
     public void processTimeout() {
         processSim.setIsOnline(false);
 
@@ -122,6 +159,4 @@ public class ProcessManager {
     public void setPostProcessSims(HashSet<ProcessSim> postProcessSims) {
         this.postProcessSims = postProcessSims;
     }
-    
-    
 }

@@ -5,6 +5,7 @@
 package util;
 
 /**
+ * 过程类对应的序列化类
  *
  * @author b1106
  */
@@ -63,5 +64,5 @@ public class ProcessSim {
 
     public void setIsOnline(boolean isOnline) {
         this.isOnline = isOnline;
-    }   
+    }
 }
